@@ -1,4 +1,4 @@
-name: Build apk
+name: Build APK
 
 on:
   push:
@@ -6,23 +6,24 @@ on:
 
 jobs:
   build:
-    runs-on: oppo-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Python Kur
-        uses: actions/setup-python@v5
+      - name: Java Kur
+        uses: actions/setup-java@v4
         with:
-          python-version: "3.11"
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Kütüphaneleri Kur
-        run: pip install pyinstaller opencv-python pillow
+      - name: Gradle İzni Ver
+        run: chmod +x gradlew
 
-      - name: apk Yap
-        run: pyinstaller --onefile --noconsole kilit.py
+      - name: APK Derle
+        run: ./gradlew assembleRelease
 
-      - name: EXE'yi Yükle
+      - name: APK Yükle
         uses: actions/upload-artifact@v4
         with:
-          name: kilit-apk
-          path: dist/kilit.apk
+          name: draghyper-apk
+          path: app/build/outputs/apk/release/app-release-unsigned.apk
