@@ -1,4 +1,4 @@
-# tek_ai.py - Tek dosyada tam AI asistanı
+# tek_ai.py - TekAI yapay zeka sınıfı
 import random
 import datetime
 import json
@@ -25,31 +25,20 @@ class TekAI:
     def cevapla(self, mesaj):
         mesaj = mesaj.lower().strip()
         
-        # Saat
         if "saat" in mesaj:
             return datetime.datetime.now().strftime("%H:%M")
-        
-        # Tarih
         if "tarih" in mesaj:
             return datetime.datetime.now().strftime("%d.%m.%Y")
-        
-        # Hatırla
         if "hatırla" in mesaj:
             self.veri["hatirla"].append(mesaj.replace("hatırla", "").strip())
             self.kaydet()
             return "Hatırladım!"
-        
-        # Hatırladıklarım
         if "hatırladıkların" in mesaj:
             if self.veri["hatirla"]:
                 return "Hatırladıklarım: " + ", ".join(self.veri["hatirla"][-5:])
             return "Henüz bir şey hatırlamıyorum."
-        
-        # Basit sohbet
         if mesaj in self.veri["sohbet"]:
             return random.choice(self.veri["sohbet"][mesaj])
-        
-        # Öğren
         if "öğren" in mesaj:
             try:
                 anahtar, cevap = mesaj.replace("öğren", "").split("=")
@@ -62,21 +51,13 @@ class TekAI:
                 return f"Öğrendim: {anahtar} → {cevap}"
             except:
                 return "Öğren formatı: öğren kelime=cevap"
-        
-        # Bilmiyorsa
         return f"Bilmiyorum. Bana 'öğren {mesaj}=cevap' yazarak öğretebilirsin."
     
     def baslat(self):
-        print(f"\n{self.ad} Hazır! (çık yazınca kapanır)")
-        print("Komutlar: saat, tarih, hatırla ..., hatırladıkların, öğren ...=...")
+        print(f"\n{self.ad} Hazır!")
         while True:
             gir = input("Sen: ")
             if gir.lower() in ["çık", "exit", "kapat"]:
                 print("Görüşürüz!")
                 break
-            cevap = self.cevapla(gir)
-            print(f"{self.ad}: {cevap}")
-
-if __name__ == "__main__":
-    ai = TekAI()
-    ai.baslat()
+            print(f"{self.ad}: {self.cevapla(gir)}")
