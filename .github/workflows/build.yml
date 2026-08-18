@@ -16,30 +16,30 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.10'
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf \
+        sudo apt install -y \
+          git zip unzip openjdk-17-jdk python3-pip autoconf \
           libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev \
           libtinfo5 cmake libffi-dev libssl-dev
+
+    - name: Install Python packages
+      run: |
         pip install --upgrade pip
-        pip install buildozer cython virtualenv
+        pip install buildozer cython
 
-    - name: Initialize Buildozer
+    - name: Build APK with Buildozer (verbose)
       run: |
-        buildozer init
-
-    - name: Build APK with Buildozer
-      run: |
-        buildozer android debug deploy run
+        buildozer android debug deploy run --verbose
       env:
-        ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
-        ANDROID_NDK_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r25c
-        PATH: ${{ github.workspace }}/.buildozer/android/platform/android-sdk/tools/bin:$PATH
+        ANDROID_HOME: ~/.buildozer/android/platform/android-sdk
+        ANDROID_NDK_HOME: ~/.buildozer/android/platform/android-ndk-r25c
 
-    - name: Upload APK as artifact
+    - name: Upload APK
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: TekAI-APK
