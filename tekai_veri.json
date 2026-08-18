@@ -1,0 +1,11 @@
+{
+  "sohbet": {
+    "merhaba": ["selam", "nasılsın?", "iyi günler"],
+    "nasılsın": ["iyiyim sen?", "harika"]
+  },
+  "hatirla": [
+    "bugün hava güzel",
+    "toplantı saat 3'te",
+    "ali'yi ara"
+  ]
+}
